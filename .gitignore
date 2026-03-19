@@ -1,0 +1,19 @@
+# Keep repo minimal and portable
+*.log
+*.tmp
+cache/
+sessions/
+telemetry/
+debug/
+backups/
+projects/
+tasks/
+todos/
+file-history/
+paste-cache/
+shell-snapshots/
+plugins/
+.credentials.json
+history.jsonl
+settings.local.json
+mcp-needs-auth-cache.json

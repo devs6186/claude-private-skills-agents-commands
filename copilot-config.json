@@ -1,0 +1,20 @@
+{
+  "firstLaunchAt": "2026-03-15T18:20:43.079Z",
+  "banner": "never",
+  "last_logged_in_user": {
+    "host": "https://github.com",
+    "login": "devs6186"
+  },
+  "logged_in_users": [
+    {
+      "host": "https://github.com",
+      "login": "devs6186"
+    }
+  ],
+  "trusted_folders": [
+    "C:\\GSOC\\FLARE\\capa"
+  ],
+  "model": "gpt-5.3-codex",
+  "reasoning_effort": "high",
+  "disabled_skills": []
+}
