@@ -73,6 +73,16 @@ Every non-trivial task follows this pipeline:
 | Full security audit (comprehensive) | `security-auditor-agent` (or `master-security`) |
 | End-to-end system architecture blueprint | `solution-architecture-agent` (or `master-architect`) |
 | Project planning with milestones | `project-planner-agent` (or `master-architect`) |
+| TypeScript implementation, strict typing, generics | `typescript-specialist` |
+| Python implementation guidance, idiomatic patterns | `python-specialist` |
+| Database schema design, indexing, query optimization | `database-specialist` |
+| Coordinate 3+ parallel agents on a single objective | `project-coordinator` |
+| Production-ready boilerplate / template generation | `base-template-generator` |
+| Complex multi-phase feature (SPARC methodology) | `/sparc` |
+| Parallel multi-agent swarm (large codebases) | `swarm-orchestration` skill + `project-coordinator` |
+| High-stakes decision needing multiple perspectives | `hive-mind-advanced` skill |
+| Remove AI writing patterns, humanize text | `humanizer` skill |
+| Any complex multi-domain task (auto-routes) | `/workflow-orchestrator` |
 
 ---
 
@@ -147,6 +157,13 @@ Every non-trivial task follows this pipeline:
 - `cost-aware-llm-pipeline` → LLM cost optimization
 - `prompt-optimizer` → prompt improvement
 - `dmux-workflows` → multi-agent orchestration
+- `sparc-methodology` → SPARC S→P→A→R→C multi-agent pipeline
+- `swarm-orchestration` → parallel agent swarms (hierarchical/mesh/adaptive)
+- `hive-mind-advanced` → collective intelligence deliberation for hard decisions
+- `agentdb-memory-patterns` → persistent agent memory with HNSW vector search
+- `hooks-automation` → Claude Code lifecycle hooks (pre/post tool, session events)
+- `agentic-jujutsu` → advanced techniques: self-critique, constraint escalation, adversarial testing
+- `pair-programming` → structured AI pair programming (Navigator/Driver modes)
 
 ---
 
@@ -309,7 +326,7 @@ Use `/model-route` to get cost-optimal routing for any specific task.
 `android-clean-architecture` · `swiftui-patterns` · `swift-concurrency-6-2` · `swift-actor-persistence` · `swift-protocol-di-testing` · `compose-multiplatform-patterns`
 
 ### AI / Agent Engineering
-`claude-api` · `agentic-engineering` · `autonomous-loops` · `continuous-agent-loop` · `continuous-learning-v2` · `eval-harness` · `verification-loop` · `agent-harness-construction` · `cost-aware-llm-pipeline` · `prompt-optimizer` · `iterative-retrieval` · `search-first` · `deep-research` · `dmux-workflows`
+`claude-api` · `agentic-engineering` · `autonomous-loops` · `continuous-agent-loop` · `continuous-learning-v2` · `eval-harness` · `verification-loop` · `agent-harness-construction` · `cost-aware-llm-pipeline` · `prompt-optimizer` · `iterative-retrieval` · `search-first` · `deep-research` · `dmux-workflows` · `sparc-methodology` · `swarm-orchestration` · `hive-mind-advanced` · `agentdb-memory-patterns` · `hooks-automation` · `agentic-jujutsu` · `pair-programming`
 
 ### Business Domain
 `carrier-relationship-management` · `customs-trade-compliance` · `energy-procurement` · `inventory-demand-planning` · `logistics-exception-management` · `production-scheduling` · `quality-nonconformance` · `returns-reverse-logistics` · `market-research` · `investor-materials` · `investor-outreach`
@@ -347,3 +364,9 @@ Use `/model-route` to get cost-optimal routing for any specific task.
 | `/save-session` · `/resume-session` | Session persistence |
 | `/prompt-optimize` | Optimize a prompt |
 | `/model-route` | Get cost-optimal model routing |
+| `/sparc` | Run SPARC multi-agent pipeline (S→P→A→R→C) |
+| `/workflow-orchestrator` | Master orchestrator — auto-detects and routes any task |
+| `humanizer` skill | Remove AI writing patterns, restore human voice |
+| `swarm-orchestration` skill | Launch parallel agent swarm |
+| `hive-mind-advanced` skill | Collective intelligence for high-stakes decisions |
+| `agentic-jujutsu` skill | Advanced techniques: self-critique, adversarial testing |

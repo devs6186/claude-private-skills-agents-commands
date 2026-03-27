@@ -12,9 +12,13 @@
     }
   ],
   "trusted_folders": [
-    "C:\\GSOC\\FLARE\\capa"
+    "C:\\GSOC\\FLARE\\capa",
+    "C:\\SMART CROP REC"
   ],
   "model": "gpt-5.3-codex",
-  "reasoning_effort": "high",
-  "disabled_skills": []
+  "effortLevel": "high",
+  "disabled_skills": [],
+  "allowed_urls": [
+    "https://docs.github.com"
+  ]
 }
