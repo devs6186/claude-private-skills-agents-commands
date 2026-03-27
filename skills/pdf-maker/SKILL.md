@@ -1,15 +1,15 @@
 ---
 name: pdf-maker
-description: "Generate professional styled PDFs from markdown with Mermaid diagrams and fal.ai AI-generated images. Analyses content to decide which sections get technical diagrams (Mermaid) vs illustrative AI images (fal.ai). Handles full pipeline: prompt crafting, image generation, diagram rendering, embedding, and styled PDF output."
+description: "Generate professional styled PDFs from markdown with Mermaid diagrams and Gemini Imagen 3 AI-generated images. Analyses content to decide which sections get technical diagrams (Mermaid) vs illustrative AI images (Gemini). Handles full pipeline: prompt crafting, image generation, diagram rendering, embedding, and styled PDF output."
 ---
 
 # PDF Maker
 
-**Role**: Document-to-PDF Generator with Mermaid Diagrams + AI-Generated Images
+**Role**: Document-to-PDF Generator with Mermaid Diagrams + Gemini AI Images
 
 You transform markdown documents into professional, styled PDFs with two types of visuals:
 - **Mermaid diagrams** — for technical content: architecture, flows, sequences, data models, timelines
-- **AI-generated images** — for conceptual content: illustrations, hero images, section visuals, metaphors
+- **AI-generated images** — for conceptual content: illustrations, hero images, section visuals, metaphors (via Google Gemini Imagen 3)
 
 You handle the full pipeline: analyzing content, crafting prompts, generating images, rendering diagrams, embedding both types, and producing a styled A4 PDF.
 
@@ -19,15 +19,22 @@ You handle the full pipeline: analyzing content, crafting prompts, generating im
 
 Install once per project (check first, skip if already installed):
 ```bash
-npm install --save-dev @mermaid-js/mermaid-cli md-to-pdf node-fetch
+npm install --save-dev @mermaid-js/mermaid-cli md-to-pdf
 ```
 
-**API key required for AI images:**
+**API key required for AI images — free from Google AI Studio:**
 ```bash
-# Set in your shell, or prefix commands with it
-export FAL_KEY=your_fal_ai_key_here
-# Get one free at: https://fal.ai
+# Get your free key at: https://aistudio.google.com/apikey
+# Then set as environment variable (never hardcode it):
+export GEMINI_API_KEY=your_key_here          # Mac/Linux
+$env:GEMINI_API_KEY = "your_key_here"        # Windows PowerShell
 ```
+
+**Why Gemini over alternatives:**
+- Free tier available via Google AI Studio (no billing required to start)
+- Images returned as base64 — no URL downloading needed
+- Imagen 3 produces high-quality, photorealistic images
+- Node 18+ has built-in `fetch` — no extra packages needed
 
 ---
 
@@ -44,10 +51,10 @@ Read the source markdown file. For every section, decide:
 | Decision tree, process steps | Mermaid `flowchart TB` |
 | Data model, entity relationships | Mermaid `erDiagram` or `classDiagram` |
 | Schedule, roadmap, milestones | Mermaid `timeline` |
-| Conceptual illustration, metaphor | AI image (fal.ai) |
-| Hero / cover image | AI image (fal.ai) |
-| Abstract concept without clear structure | AI image (fal.ai) |
-| Section intro that benefits from visual context | AI image (fal.ai) |
+| Conceptual illustration, metaphor | AI image (Gemini Imagen 3) |
+| Hero / cover image | AI image (Gemini Imagen 3) |
+| Abstract concept without clear structure | AI image (Gemini Imagen 3) |
+| Section intro that benefits from visual context | AI image (Gemini Imagen 3) |
 
 Output a plan:
 ```
@@ -62,112 +69,154 @@ Mermaid diagrams needed:
 
 ---
 
-### 2. Generate AI Images (fal.ai)
+### 2. Generate AI Images (Gemini Imagen 3)
 
-Create `generate-images.js`. Run this ONCE — images are saved locally and reused.
+Create `generate-images.js`. Run this ONCE — images are saved locally and reused on every PDF rebuild.
 
 ```javascript
+// generate-images.js
+// Requires Node 18+ (built-in fetch). No extra packages needed.
 const fs = require('fs');
 const path = require('path');
 
-const FAL_KEY = process.env.FAL_KEY;
-if (!FAL_KEY) {
-  console.error('Error: FAL_KEY environment variable not set.');
-  console.error('Get one free at https://fal.ai and run: export FAL_KEY=your_key');
+const GEMINI_KEY = process.env.GEMINI_API_KEY;
+if (!GEMINI_KEY) {
+  console.error('Error: GEMINI_API_KEY environment variable not set.');
+  console.error('Get a free key at https://aistudio.google.com/apikey');
+  console.error('Then run: export GEMINI_API_KEY=your_key   (Mac/Linux)');
+  console.error('       or: $env:GEMINI_API_KEY="your_key"  (PowerShell)');
   process.exit(1);
 }
 
 const IMAGES_DIR = path.join(__dirname, 'diagrams');
 if (!fs.existsSync(IMAGES_DIR)) fs.mkdirSync(IMAGES_DIR, { recursive: true });
 
-// Define what to generate — edit this to match your document content
+// ─── EDIT THIS to match your document ─────────────────────────────────────────
 const IMAGES = [
   {
     filename: 'hero.png',
-    prompt: 'Professional hero image for [DOCUMENT TOPIC], modern minimalist design, dark theme with blue accents, digital art style',
-    size: 'landscape_16_9',
+    prompt: 'Professional hero banner for [DOCUMENT TOPIC], dark background, glowing blue accents, modern minimalist tech aesthetic, ultra wide, high quality digital art',
+    aspectRatio: '16:9',
   },
   {
     filename: 'concept-overview.png',
-    prompt: 'Conceptual illustration of [MAIN CONCEPT], abstract geometric design, dark background, glowing blue elements, professional tech aesthetic',
-    size: 'landscape_16_9',
+    prompt: 'Abstract conceptual illustration of [MAIN CONCEPT], geometric shapes, dark theme with cyan and blue glowing elements, professional, clean, 4K quality',
+    aspectRatio: '16:9',
   },
-  // Add more as needed
+  // Add more entries as needed
 ];
+// ──────────────────────────────────────────────────────────────────────────────
 
-async function generateImage(prompt, size) {
-  const response = await fetch('https://fal.run/fal-ai/nano-banana-2', {
+async function generateImage(prompt, aspectRatio) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${GEMINI_KEY}`;
+
+  const response = await fetch(url, {
     method: 'POST',
-    headers: {
-      'Authorization': `Key ${FAL_KEY}`,
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      prompt,
-      image_size: size,
-      num_images: 1,
-      seed: 42, // fixed seed for reproducibility
+      instances: [{ prompt }],
+      parameters: {
+        sampleCount: 1,
+        aspectRatio,              // "16:9" | "4:3" | "1:1" | "3:4" | "9:16"
+        safetyFilterLevel: 'BLOCK_SOME',
+        personGeneration: 'DONT_ALLOW',
+      },
     }),
   });
 
   if (!response.ok) {
-    throw new Error(`fal.ai API error: ${response.status} ${await response.text()}`);
+    const err = await response.text();
+    throw new Error(`Gemini API error ${response.status}: ${err}`);
   }
 
   const result = await response.json();
-  return result.images[0].url;
-}
 
-async function downloadImage(url, filepath) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Failed to download image: ${res.status}`);
-  const buffer = await res.arrayBuffer();
-  fs.writeFileSync(filepath, Buffer.from(buffer));
+  if (!result.predictions?.length) {
+    throw new Error(`No image returned. Response: ${JSON.stringify(result)}`);
+  }
+
+  // Images come back as base64 — no download needed
+  return result.predictions[0].bytesBase64Encoded;
 }
 
 async function main() {
-  console.log(`Generating ${IMAGES.length} AI image(s) via fal.ai...`);
+  console.log(`Generating ${IMAGES.length} image(s) via Gemini Imagen 3...\n`);
 
-  // Generate all images in parallel
-  await Promise.all(IMAGES.map(async ({ filename, prompt, size }) => {
+  // Run in parallel — each image is independent
+  await Promise.all(IMAGES.map(async ({ filename, prompt, aspectRatio }) => {
     const filepath = path.join(IMAGES_DIR, filename);
 
-    // Skip if already exists (saves API cost on re-runs)
+    // Skip if already exists — delete the file to force regeneration
     if (fs.existsSync(filepath)) {
-      console.log(`  [skip] ${filename} already exists`);
+      console.log(`  [skip]  ${filename}  (already exists — delete to regenerate)`);
       return;
     }
 
-    console.log(`  [gen]  ${filename}: ${prompt.slice(0, 60)}...`);
-    const url = await generateImage(prompt, size);
-    await downloadImage(url, filepath);
-    console.log(`  [done] ${filename} saved`);
+    console.log(`  [gen]   ${filename}  "${prompt.slice(0, 55)}..."`);
+    const base64 = await generateImage(prompt, aspectRatio);
+    fs.writeFileSync(filepath, Buffer.from(base64, 'base64'));
+    console.log(`  [saved] ${filename}`);
   }));
 
-  console.log('All images generated.');
+  console.log('\nAll images ready in diagrams/');
 }
 
-main().catch(console.error);
+main().catch(err => {
+  console.error('\nFailed:', err.message);
+  process.exit(1);
+});
 ```
 
 **Run:**
 ```bash
-FAL_KEY=your_key_here node generate-images.js
+# Mac/Linux
+GEMINI_API_KEY=your_key node generate-images.js
+
+# Windows PowerShell
+$env:GEMINI_API_KEY="your_key"; node generate-images.js
 ```
 
-**Image size options:**
-| Size | Dimensions | Best For |
-|------|-----------|----------|
-| `landscape_16_9` | Wide | Hero images, section banners |
-| `landscape_4_3` | Standard wide | Section illustrations |
-| `square` | 1:1 | Icons, profile-style images |
-| `portrait_4_3` | Tall | Sidebar images |
+**Aspect ratio options:**
+| Value | Shape | Best For |
+|-------|-------|----------|
+| `16:9` | Wide landscape | Hero images, section banners |
+| `4:3` | Standard landscape | Section illustrations |
+| `1:1` | Square | Icons, inset images |
+| `3:4` | Portrait | Sidebar images |
+| `9:16` | Tall portrait | Mobile-style visuals |
 
-**Prompt tips:**
-- Specify style: `dark theme`, `minimalist`, `digital art`, `tech aesthetic`, `photorealistic`
-- Specify colors to match your PDF theme: `blue accents`, `neon cyan`, `dark background`
-- Be concrete: `"flowchart of data moving through a pipeline"` beats `"data illustration"`
-- Add quality boosters: `professional, high quality, clean design`
+**Prompt tips for Imagen 3:**
+- Lead with the subject: `"Abstract illustration of distributed systems..."` not `"Create an image of..."`
+- Specify style explicitly: `dark background`, `minimalist`, `digital art`, `photorealistic`, `tech aesthetic`
+- Match your PDF color theme: `blue accents`, `neon cyan`, `dark navy background`
+- Quality boosters: `ultra high quality`, `professional`, `clean design`, `4K`
+- Avoid: people, faces, text in image (Imagen 3 blocks these by default)
+
+**If you get a 400 error:** Your region may need billing enabled in Google Cloud to use Imagen 3. Fallback: use `gemini-2.0-flash-preview-image-generation` model (see Fallback section below).
+
+**Gemini Flash Fallback** (if Imagen 3 is unavailable in your region):
+```javascript
+// Replace the generateImage function with this version:
+async function generateImage(prompt, aspectRatio) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${GEMINI_KEY}`;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { responseModalities: ['IMAGE', 'TEXT'] },
+    }),
+  });
+
+  if (!response.ok) throw new Error(`Gemini error ${response.status}: ${await response.text()}`);
+
+  const result = await response.json();
+  const imagePart = result.candidates[0].content.parts.find(p => p.inlineData);
+  if (!imagePart) throw new Error('No image in response');
+  return imagePart.inlineData.data; // base64
+}
+```
 
 ---
 
@@ -375,10 +424,12 @@ node generate-pdf.js
 | Gantt chart crashes mmdc | Puppeteer bug | Use `timeline` type instead |
 | Diagram too compressed | Horizontal layout | Switch to `flowchart TB`, increase dimensions |
 | PDF images broken on GitHub | `file:///` paths are local-only | Keep ASCII art in `.md` for GitHub |
-| `fetch is not defined` | Node < 18 | Add `npm install node-fetch` and `const fetch = require('node-fetch')` |
-| FAL_KEY not set | Missing env var | `export FAL_KEY=your_key` before running |
-| AI image regenerates on every run | File exists check skipped | The script skips existing files — delete to force regenerate |
-| AI image off-theme | Vague prompt | Add style keywords: `dark theme, blue accents, tech aesthetic` |
+| `fetch is not defined` | Node < 18 | Upgrade to Node 18+ (`node --version` to check) |
+| GEMINI_API_KEY not set | Missing env var | `export GEMINI_API_KEY=your_key` before running |
+| 400 error from Imagen 3 | Region restriction | Use Gemini Flash fallback (see script above) |
+| `No image returned` | Safety filter blocked prompt | Rephrase — avoid violence, people, explicit content |
+| AI image regenerates on every run | File exists check skipped | Script skips existing files — delete to force regenerate |
+| AI image off-theme | Vague prompt | Add: `dark background, blue accents, tech aesthetic, 4K quality` |
 
 ---
 
