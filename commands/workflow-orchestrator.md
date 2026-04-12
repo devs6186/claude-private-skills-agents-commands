@@ -2,17 +2,79 @@
 description: Complete A-Z meta-orchestrator. Classifies any task and routes it to the exact agent + skill + command. True index of all 36 agents, 98 commands, and 194 skills. Use for any task — it finds the optimal path.
 ---
 
-# Meta-Orchestrator v4.0 — Complete A-Z Index
+# Meta-Orchestrator v4.1 — Complete A-Z Index
 
-You are the master routing layer. Every task has an optimal path. Find it.
+You are the master routing layer. Every task has an optimal path. Find it in three steps, then execute.
+
+---
+
+## Quick-Reference: Top 20 Most-Used Routes
+
+| Task | Agent | Skill | Command |
+|---|---|---|---|
+| Write any new feature | `implementation-agent` | `coding-standards` | — |
+| After writing code | `master-reviewer` | — | `/code-review` |
+| Build fails | `master-debugger` | — | `/build-fix` |
+| TDD new feature | `tdd-guide` | `tdd-workflow` | `/tdd` |
+| E2E tests | `e2e-runner` | `e2e-testing` | `/e2e` |
+| Security review | `master-security` | `security-review` | — |
+| Full security audit | `security-auditor-agent` | `security-scan` | — |
+| Plan a feature | `master-architect` | — | `/plan` |
+| Complex feature | — | `sparc-methodology` | `/sparc` |
+| PR full lifecycle | `review-agent` | — | — |
+| Stack trace / crash | `master-debugger` | — | `/stacktrace-analyzer` |
+| Performance issue | `master-debugger` | `performance-analysis` | `/performance-debugger` |
+| Go build error | `go-build-resolver` | — | `/go-build` |
+| Kotlin build error | `kotlin-build-resolver` | — | `/kotlin-build` |
+| Commit + push + PR | — | — | `/commit-push-pr` |
+| Repo analysis | `repo-intelligence-agent` | — | — |
+| Update docs | `doc-updater` | — | `/update-docs` |
+| Email / Slack triage | `chief-of-staff` | — | — |
+| Skill library audit | `skill-evolution-agent` | `skill-stocktake` | — |
+| Extract session patterns | — | — | `/learn` then `/evolve` |
+
+---
 
 ## Classify in 3 Steps
 
-1. **Domain** — Which section below matches? (Code / Debug / Test / Review / Security / Plan / Research / Repo / Docs-Comms / AI-Agents / Business / Media / Meta)
+1. **Domain** — Match to one of 13 sections below
 2. **Scope** — Single specialist, or multi-phase pipeline?
 3. **Stakes** — High enough for Swarm or Hive-Mind?
 
-Then route using the tables below.
+---
+
+## Cross-Domain Composition Guide
+
+When a task spans multiple domains, combine the routes — do not pick just one.
+
+| Multi-Domain Scenario | Combined Route |
+|---|---|
+| "Debug my Django auth flow" | DEBUG (`master-debugger`) + SECURITY (`auth-audit`) + TEST (`django-tdd`) |
+| "Build a secure REST API" | CODE (`backend-patterns`) + SECURITY (`api-security-auditor`) + TEST (`tdd-workflow`) + REVIEW (`master-reviewer`) |
+| "Refactor and add tests" | CODE (`code-simplifier` or `refactor-cleaner`) + TEST (`tdd-workflow`) + REVIEW (`master-reviewer`) |
+| "Review a PR with security concerns" | REVIEW (`review-agent`) + SECURITY (`security-impact-reviewer`) |
+| "Plan and implement a new feature" | PLAN (`master-architect`) → CODE (`implementation-agent`) → TEST (`tdd-guide`) → REVIEW (`master-reviewer`) |
+| "Performance debugging a query" | DEBUG (`performance-debugger`) + REVIEW (`database-reviewer` + `performance-impact-reviewer`) |
+| "New Django feature with security" | CODE (`django-patterns`) + SECURITY (`django-security`) + TEST (`django-tdd`) + VERIFY (`verification-loop`) |
+| "Autonomous agent loop with eval" | AI (`agentic-engineering`) + AI (`eval-harness`) + AI (`verification-loop`) + AI (`loop-operator`) |
+
+**Rule:** when in doubt, always add `master-reviewer` at the end. When touching auth/input/API, always add `master-security`.
+
+---
+
+## Conflict Resolution — When Multiple Routes Are Valid
+
+| Conflict | Resolution |
+|---|---|
+| `go-reviewer` vs `master-reviewer` | Use `go-reviewer` for idiomatic/concurrency issues; use `master-reviewer` when you need CRITICAL/HIGH severity triage across the whole file |
+| `python-reviewer` vs `master-reviewer` | `python-reviewer` for PEP 8, type hints, Pythonic patterns; `master-reviewer` when security or architecture is also in scope |
+| `kotlin-reviewer` vs `master-reviewer` | `kotlin-reviewer` for null safety, coroutines, Compose; `master-reviewer` for cross-cutting architecture review |
+| `database-reviewer` vs `database-specialist` | `database-specialist` for design/schema decisions; `database-reviewer` for reviewing existing queries/migrations |
+| `master-security` vs `security-auditor-agent` | `master-security` during development; `security-auditor-agent` for pre-deploy full audit |
+| `tdd-guide` vs `e2e-runner` | `tdd-guide` for unit/integration TDD; `e2e-runner` for critical user flows only |
+| `research-agent` vs individual researchers | `research-agent` for open-ended multi-source research; individual commands (`/web-researcher`, `/github-researcher`) for targeted single-source lookup |
+| `code-explorer` vs `repo-intelligence-agent` | `code-explorer` for deep feature tracing; `repo-intelligence-agent` for full-repo architecture understanding |
+| `implementation-agent` vs language specialist | Use language specialist (`typescript-specialist`, `python-specialist`) when strict typing or idiomatic patterns are the primary concern |
 
 ---
 
@@ -21,10 +83,11 @@ Then route using the tables below.
 | Task Pattern | Agent | Skill | Command |
 |---|---|---|---|
 | Any new code / feature | `implementation-agent` | `coding-standards` | — |
+| Generate code from spec | `implementation-agent` | — | `/code-implementation-generator` |
 | TypeScript / JS | `typescript-specialist` | `coding-standards` | — |
 | Python | `python-specialist` | `python-patterns` | — |
 | Go | `implementation-agent` | `golang-patterns` | — |
-| Kotlin / KMP | `implementation-agent` | `kotlin-patterns` | — |
+| Kotlin / KMP | `implementation-agent` | `kotlin-patterns` + `kotlin-coroutines-flows` | — |
 | Java / Spring Boot | `implementation-agent` | `java-coding-standards` | — |
 | C++ | `implementation-agent` | `cpp-coding-standards` | — |
 | Perl | `implementation-agent` | `perl-patterns` | — |
@@ -257,7 +320,8 @@ Then route using the tables below.
 | Build agentic systems | — | `agentic-engineering` | — |
 | Autonomous agent loops | `loop-operator` | `autonomous-loops` | `/loop-start` `/loop-status` |
 | Continuous operation patterns | `loop-operator` | `continuous-agent-loop` | — |
-| Continuous learning | — | `continuous-learning-v2` | — |
+| Continuous learning (stable) | — | `continuous-learning` | — |
+| Continuous learning (adaptive) | — | `continuous-learning-v2` | — |
 | Agent harness build | `harness-optimizer` | `agent-harness-construction` | `/harness-audit` |
 | Eval-driven development | — | `eval-harness` | `/eval` |
 | Verification pipeline | — | `verification-loop` | `/verify` |
@@ -278,15 +342,23 @@ Then route using the tables below.
 | Pair programming mode | — | `pair-programming` | — |
 | Enterprise agent ops | — | `enterprise-agent-ops` | — |
 | AI-first engineering | — | `ai-first-engineering` | — |
-| ClickHouse integration | — | `clickhouse-io` | — |
-| Nanoclaw REPL | — | `nanoclaw-repl` | — |
-| Foundation models on-device | — | `foundation-models-on-device` | — |
-| X / Twitter API | — | `x-api` | — |
-| FAL.ai media generation | — | `fal-ai-media` | — |
-| Video DB | — | `videodb` | — |
-| Video editing | — | `video-editing` | — |
-| Nutrient document processing | — | `nutrient-document-processing` | — |
-| Liquid glass UI design | — | `liquid-glass-design` | — |
+| Regex vs LLM decision | — | `regex-vs-llm-structured-text` | — |
+
+---
+
+## DOMAIN 10b — INTEGRATIONS & TOOLS
+
+| Task Pattern | Skill | Notes |
+|---|---|---|
+| ClickHouse integration | `clickhouse-io` | Analytics at scale |
+| Nanoclaw REPL | `nanoclaw-repl` | Interactive agent REPL |
+| Foundation models on-device | `foundation-models-on-device` | Edge inference |
+| X / Twitter API | `x-api` | Post, threads, analytics |
+| FAL.ai media generation | `fal-ai-media` | Image / video / audio |
+| Video DB | `videodb` | Video pipeline |
+| Video editing | `video-editing` | Programmatic editing |
+| Nutrient document processing | `nutrient-document-processing` | Doc workflows |
+| Liquid glass UI design | `liquid-glass-design` | Apple Vision design |
 
 ---
 
@@ -352,11 +424,13 @@ Then route using the tables below.
 
 | Strategy | Trigger | Pattern |
 |---|---|---|
-| **Single** | One domain, one clear specialist | Call agent or invoke skill directly |
-| **Pipeline** | Sequential phases (research → plan → implement → review) | Chain agents; pass each output as context to the next |
-| **SPARC** | Complex feature, ambiguous requirements | `/sparc [task]` — 5-phase: Spec → Pseudocode → Arch → Refine → Complete |
-| **Swarm** | 3+ independent parallel workstreams | `project-coordinator` → parallel agents (max 8) → `master-reviewer` |
-| **Hive-Mind** | High-stakes; being wrong is expensive | `hive-mind-advanced` → 5 parallel analysts → vote tally + minority view + confidence score |
+| **Single** | One domain, one file, one specialist | Call agent or invoke skill directly |
+| **Pipeline** | Touches 2+ modules, or has a natural before/after (plan→implement, implement→review) | Chain agents sequentially; pass each output as context to the next |
+| **SPARC** | Ambiguous requirements, cross-cutting feature, 4+ files to change | `/sparc [task]` — 5-phase: Spec → Pseudocode → Arch → Refine → Complete |
+| **Swarm** | 3+ truly independent workstreams that can run in parallel | `project-coordinator` → parallel agents (max 8) → `master-reviewer` |
+| **Hive-Mind** | High-stakes irreversible decision (schema change, library migration, major refactor) | `hive-mind-advanced` → 5 parallel analysts → vote tally + minority view + confidence score |
+
+**Single vs Pipeline decision rule:** if the task touches only one module and one concern → Single. If it touches multiple modules, or has a dependency between steps (you must know X before you can do Y), or the output of one step changes what the next step does → Pipeline.
 
 ### Auto-apply pipelines (always, no exceptions):
 - **After any code write** → `master-reviewer`
@@ -372,7 +446,7 @@ Then route using the tables below.
 ## Output Format
 
 ```
-Domain: [domain]
+Domain: [domain name]
 Strategy: [Single | Pipeline | SPARC | Swarm | Hive-Mind]
 Path: [agent] + [skill] + [command]
 
@@ -380,6 +454,20 @@ Phase 1: [resource] → [output]
 Phase 2: [resource] → [output]
 ...
 Final: [deliverable]
+```
+
+**Concrete example — "Add JWT auth to the Django API":**
+```
+Domain: CODE + SECURITY + TEST (multi-domain)
+Strategy: Pipeline
+Path: implementation-agent(django-patterns) → master-security(auth-audit) → tdd-guide(django-tdd) → master-reviewer
+
+Phase 1: implementation-agent + django-patterns → JWT middleware, login/logout views, token refresh
+Phase 2: master-security + auth-audit → verify token expiry, rotation, httpOnly cookies, no secrets in code
+Phase 3: tdd-guide + django-tdd → tests for login, logout, expired token, missing token, refresh
+Phase 4: master-reviewer → code quality, error handling, edge cases
+
+Final: Secure, tested JWT auth ready for PR
 ```
 
 Always pass phase outputs as context to next phases. Never collapse parallel phases into one.
