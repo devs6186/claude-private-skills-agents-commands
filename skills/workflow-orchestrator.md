@@ -3,11 +3,11 @@ name: workflow-orchestrator
 description: Master front-door orchestration skill. Step 0 always invokes prompt-refiner for intent refinement, then inventories all installed skills and agents at runtime, classifies the task, and routes to the optimal execution strategy — single agent, pipeline, SPARC, swarm, or hive-mind. The single entry point for all complex tasks.
 metadata:
   author: devs6186+dev-os
-  version: 4.0
+  version: 4.1
   category: orchestration
 ---
 
-# Master Workflow Orchestrator v4.0
+# Master Workflow Orchestrator v4.1
 
 Write your query. This orchestrator handles everything else.
 
@@ -36,7 +36,7 @@ If `prompt-refiner` is unavailable, perform `internal_refinement` inline using t
 
 After prompt-refiner completes, inventory all installed assets:
 
-1. Inspect `~/.claude/skills/` — all 193 skills
+1. Inspect `~/.claude/skills/` — all 201 skills
 2. Inspect `~/.claude/agents/` — all 36 agents
 3. For each discovered skill/agent, classify as `primary_candidate`, `support_candidate`, or `irrelevant` given the refined prompt
 4. If inventory cannot be completed, continue with reduced confidence
@@ -102,8 +102,8 @@ Check every bucket below. Mark each `support` or `skip`.
 
 | Bucket | Mark `support` When | Typical Picks |
 |---|---|---|
-| Repository understanding | Code changes required, unfamiliar repo | `repo-overview`, `repo-structure-analyzer`, `code-explorer`, `repo-intelligence-agent` |
-| Planning & architecture | `work_type = planning` or `codebase_impact = architecture` | `blueprint`, `task-decomposer`, `solution-architecture-agent`, `master-architect` |
+| Repository understanding | Code changes required, unfamiliar repo | `repo-overview`, `repo-structure-analyzer`, `code-explorer`, `repo-intelligence-agent`, `smart-explore` |
+| Planning & architecture | `work_type = planning` or `codebase_impact = architecture` | `blueprint`, `task-decomposer`, `solution-architecture-agent`, `master-architect`, `make-plan`, `do` |
 | Implementation | Code or scaffolding will be written | `implementation-agent`, `tdd-workflow`, `base-template-generator` |
 | Debugging | Failing build, test, or runtime error | `failing-test-analyzer`, `error-log-analyzer`, `stacktrace-analyzer`, `fix-strategy-generator` |
 | Review | Any code or config will change | `master-reviewer`, stack-specific reviewer |
@@ -117,7 +117,7 @@ Check every bucket below. Mark each `support` or `skip`.
 | Performance | Latency, throughput, memory, or scale explicit | `performance-analysis`, `performance-debugger` |
 | Skills & harness | Skills, hooks, or agent harnesses touched | `skill-evolution-agent`, `skill-compatibility-validator`, `hooks-automation` |
 | Content & business | Writing or business-domain requirements | best matching content or business skill |
-| AI & agents | Agent systems, Claude API, eval, hooks | `agentic-engineering`, `claude-api`, `eval-harness`, `agentdb-memory-patterns` |
+| AI & agents | Agent systems, Claude API, eval, hooks | `agentic-engineering`, `claude-api`, `eval-harness`, `agentdb-memory-patterns`, `mem-search`, `knowledge-agent`, `timeline-report` |
 
 Selection rules:
 - Choose the narrowest relevant skill first
@@ -274,10 +274,10 @@ If `execution_shape = multi_agent`: assign explicit ownership to each workstream
 ## Full Skill Reference (193 skills in ~/.claude/skills/)
 
 ### Debugging & Analysis
-`error-log-analyzer` · `stacktrace-analyzer` · `dependency-conflict-detector` · `environment-debugger` · `configuration-analyzer` · `api-integration-debugger` · `performance-debugger` · `failing-test-analyzer` · `minimal-reproduction-builder` · `fix-strategy-generator` · `execution-path-analyzer` · `dependency-testing-analyzer`
+`error-log-analyzer` · `stacktrace-analyzer` · `dependency-conflict-detector` · `environment-debugger` · `configuration-analyzer` · `api-integration-debugger` · `performance-debugger` · `failing-test-analyzer` · `minimal-reproduction-builder` · `fix-strategy-generator` · `execution-path-analyzer` · `dependency-testing-analyzer` · `anti-pattern-czar` (cmd)
 
 ### Architecture & Planning
-`problem-requirement-extractor` · `constraint-analyzer` · `architecture-pattern-selector` · `component-identifier` · `data-flow-designer` · `technology-selection-advisor` · `technology-comparison` · `scalability-planner` · `failure-mode-analyzer` · `architecture-synthesizer` · `architecture-decision-reviewer` · `scope-analyzer` · `risk-planner` · `task-decomposer` · `task-dependency-mapper` · `task-type-classifier` · `complexity-estimator` · `effort-estimator` · `milestone-generator` · `project-plan-compiler` · `project-structure-generator` · `project-guidelines-example` · `team-capacity-planner` · `blueprint` · `api-design`
+`problem-requirement-extractor` · `constraint-analyzer` · `architecture-pattern-selector` · `component-identifier` · `data-flow-designer` · `technology-selection-advisor` · `technology-comparison` · `scalability-planner` · `failure-mode-analyzer` · `architecture-synthesizer` · `architecture-decision-reviewer` · `scope-analyzer` · `risk-planner` · `task-decomposer` · `task-dependency-mapper` · `task-type-classifier` · `complexity-estimator` · `effort-estimator` · `milestone-generator` · `project-plan-compiler` · `project-structure-generator` · `project-guidelines-example` · `team-capacity-planner` · `blueprint` · `api-design` · `make-plan` · `do`
 
 ### Code Quality & Review
 `code-quality-reviewer` · `maintainability-reviewer` · `documentation-reviewer` · `performance-impact-reviewer` · `security-impact-reviewer` · `test-coverage-reviewer` · `coding-standards` · `plankton-code-quality` · `implementation-validator` · `code-implementation-generator` · `problem-classifier`
@@ -330,6 +330,9 @@ If `execution_shape = multi_agent`: assign explicit ownership to each workstream
 ### AI / Agent Engineering
 `claude-api` · `agentic-engineering` · `autonomous-loops` · `continuous-agent-loop` · `continuous-learning` · `continuous-learning-v2` · `eval-harness` · `verification-loop` · `agent-harness-construction` · `cost-aware-llm-pipeline` · `prompt-optimizer` · `dmux-workflows` · `sparc-methodology` · `swarm-orchestration` · `hive-mind-advanced` · `agentdb-memory-patterns` · `hooks-automation` · `agentic-jujutsu` · `pair-programming` · `enterprise-agent-ops` · `ai-first-engineering`
 
+### Memory & Session Intelligence (claude-mem)
+`mem-search` · `smart-explore` · `knowledge-agent` · `timeline-report`
+
 ### PR / Collaboration
 `github-pr-analyzer` · `maintainer-feedback-interpreter` · `bot-feedback-analyzer` · `requested-change-evaluator` · `human-response-drafter` · `maintainer-reply-writer` · `bot-reply-writer` · `review-report-generator` · `pr-change-implementer`
 
@@ -345,17 +348,20 @@ If `execution_shape = multi_agent`: assign explicit ownership to each workstream
 ### Business Domain
 `carrier-relationship-management` · `customs-trade-compliance` · `energy-procurement` · `inventory-demand-planning` · `logistics-exception-management` · `production-scheduling` · `quality-nonconformance` · `returns-reverse-logistics` · `market-research` · `investor-materials` · `investor-outreach` · `strategic-compact`
 
+### Career
+`job`
+
 ### Skill Evolution
 `skill-evaluator` · `skill-gap-detector` · `skill-improvement-generator` · `skill-version-manager` · `skill-weakness-analyzer` · `skill-compatibility-validator` · `skill-stocktake`
 
 ### Repository Intelligence
-`repo-activity-analyzer` · `repo-overview` · `repo-structure-analyzer` · `ecosystem-scanner` · `contribution-oppurtunity-analyzer` · `issue-finder`
+`repo-activity-analyzer` · `repo-overview` · `repo-structure-analyzer` · `ecosystem-scanner` · `contribution-oppurtunity-analyzer` · `issue-finder` · `smart-explore`
 
 ### Orchestration
 `prompt-refiner` · `workflow-orchestrator` · `sparc-methodology` · `swarm-orchestration` · `hive-mind-advanced` · `dmux-workflows`
 
 ### Misc / Utility
-`integration-assembler` · `interface-contract-designer` · `ralphinho-rfc-pipeline` · `scope-analyzer` · `problem-classifier` · `blueprint` · `api-design`
+`integration-assembler` · `interface-contract-designer` · `ralphinho-rfc-pipeline` · `scope-analyzer` · `problem-classifier` · `blueprint` · `api-design` · `dev-workflow`
 
 ---
 
@@ -406,7 +412,7 @@ If any answer is `no`, the orchestration plan is incomplete.
 [Full output from prompt-refiner]
 
 ## Inventory Summary
-- Skills available: 193 | Agents available: 36
+- Skills available: 201 | Agents available: 36
 - Inventory confidence: full | reduced
 - Routing confidence: full | reduced
 
