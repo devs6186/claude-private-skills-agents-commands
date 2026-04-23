@@ -32,16 +32,19 @@ If `prompt-refiner` is unavailable, perform `internal_refinement` inline using t
 
 ---
 
-## STEP 1 — Runtime Skill + Agent Inventory
+## STEP 1 — Runtime Skill + Agent Inventory + Memory Check
 
-After prompt-refiner completes, inventory all installed assets:
+After prompt-refiner completes, inventory all installed assets AND check cross-session memory:
 
 1. Inspect `~/.claude/skills/` — all 242 skills
 2. Inspect `~/.claude/agents/` — all 36 agents
 3. For each discovered skill/agent, classify as `primary_candidate`, `support_candidate`, or `irrelevant` given the refined prompt
 4. If inventory cannot be completed, continue with reduced confidence
+5. **Auto-run `mem-search`** — search claude-mem for prior work related to the refined prompt. If relevant past observations exist, inject them as context before routing. This prevents re-solving problems already solved in previous sessions.
 
-This means the orchestrator always routes based on what is actually installed — not a hardcoded assumption.
+> **mem-search trigger rule:** Always run at the start of a non-trivial task. Skip for one-liners, pure conversation, or tasks with zero codebase impact.
+
+This means the orchestrator always routes based on what is actually installed AND what was previously learned — not a hardcoded assumption.
 
 ---
 
