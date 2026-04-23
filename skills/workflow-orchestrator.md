@@ -36,7 +36,7 @@ If `prompt-refiner` is unavailable, perform `internal_refinement` inline using t
 
 After prompt-refiner completes, inventory all installed assets:
 
-1. Inspect `~/.claude/skills/` — all 201 skills
+1. Inspect `~/.claude/skills/` — all 242 skills
 2. Inspect `~/.claude/agents/` — all 36 agents
 3. For each discovered skill/agent, classify as `primary_candidate`, `support_candidate`, or `irrelevant` given the refined prompt
 4. If inventory cannot be completed, continue with reduced confidence
@@ -361,7 +361,48 @@ If `execution_shape = multi_agent`: assign explicit ownership to each workstream
 `prompt-refiner` · `workflow-orchestrator` · `sparc-methodology` · `swarm-orchestration` · `hive-mind-advanced` · `dmux-workflows`
 
 ### Misc / Utility
-`integration-assembler` · `interface-contract-designer` · `ralphinho-rfc-pipeline` · `scope-analyzer` · `problem-classifier` · `blueprint` · `api-design` · `dev-workflow`
+`integration-assembler` · `interface-contract-designer` · `ralphinho-rfc-pipeline` · `scope-analyzer` · `problem-classifier` · `blueprint` · `api-design` · `dev-workflow` · `claude-code-plugin-release`
+
+### gstack Sprint Workflow (Garry Tan / YC)
+Full-stack sprint toolkit with 40 skills — use as `gstack:autoplan`, `gstack:ship`, etc.
+
+| Intent | gstack Skill |
+|---|---|
+| Auto-plan a task from context | `gstack:autoplan` |
+| Plan + CEO review | `gstack:plan-ceo-review` |
+| Plan + design review | `gstack:plan-design-review` |
+| Plan + eng review | `gstack:plan-eng-review` |
+| Plan + devex review | `gstack:plan-devex-review` |
+| Plan fine-tuning | `gstack:plan-tune` |
+| Ship a feature (full deploy) | `gstack:ship` |
+| Land and deploy | `gstack:land-and-deploy` |
+| Setup deploy pipeline | `gstack:setup-deploy` |
+| QA / test run | `gstack:qa` · `gstack:qa-only` |
+| Code review | `gstack:review` · `gstack:careful` |
+| Design consultation | `gstack:design-consultation` |
+| Design HTML prototype | `gstack:design-html` |
+| Design review | `gstack:design-review` |
+| Design shotgun (rapid ideas) | `gstack:design-shotgun` |
+| Developer experience review | `gstack:devex-review` |
+| Security guard check | `gstack:guard` |
+| Canary deployment | `gstack:canary` |
+| Freeze / unfreeze deployments | `gstack:freeze` · `gstack:unfreeze` |
+| Browse / web search | `gstack:browse` |
+| Investigate / debug | `gstack:investigate` |
+| Health check | `gstack:health` |
+| Benchmark model performance | `gstack:benchmark` · `gstack:benchmark-models` |
+| Generate PDF | `gstack:make-pdf` |
+| Document release | `gstack:document-release` |
+| Pair programming agent | `gstack:pair-agent` |
+| Context save / restore | `gstack:context-save` · `gstack:context-restore` |
+| Session learning | `gstack:learn` |
+| Upgrade gstack | `gstack:gstack-upgrade` |
+| Sprint retrospective | `gstack:retro` |
+| CSO briefing | `gstack:cso` |
+| Office hours | `gstack:office-hours` |
+| Open browser | `gstack:open-gstack-browser` |
+| Browser cookies setup | `gstack:setup-browser-cookies` |
+| Codex generation | `gstack:codex` |
 
 ---
 
@@ -412,7 +453,7 @@ If any answer is `no`, the orchestration plan is incomplete.
 [Full output from prompt-refiner]
 
 ## Inventory Summary
-- Skills available: 201 | Agents available: 36
+- Skills available: 242 | Agents available: 36
 - Inventory confidence: full | reduced
 - Routing confidence: full | reduced
 

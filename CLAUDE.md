@@ -328,6 +328,21 @@ Use `/model-route` to get cost-optimal routing for any specific task.
 ### AI / Agent Engineering
 `claude-api` · `agentic-engineering` · `autonomous-loops` · `continuous-agent-loop` · `continuous-learning-v2` · `eval-harness` · `verification-loop` · `agent-harness-construction` · `cost-aware-llm-pipeline` · `prompt-optimizer` · `iterative-retrieval` · `search-first` · `deep-research` · `dmux-workflows` · `sparc-methodology` · `swarm-orchestration` · `hive-mind-advanced` · `agentdb-memory-patterns` · `hooks-automation` · `agentic-jujutsu` · `pair-programming`
 
+### Memory & Session Intelligence (claude-mem)
+`mem-search` · `smart-explore` · `knowledge-agent` · `timeline-report`
+
+### Planning & Execution Orchestration
+`make-plan` · `do` · `dev-workflow`
+
+### Career
+`job`
+
+### gstack Sprint Workflow (Garry Tan / YC — 40 skills)
+`gstack:autoplan` · `gstack:ship` · `gstack:qa` · `gstack:review` · `gstack:careful` · `gstack:guard` · `gstack:investigate` · `gstack:canary` · `gstack:freeze` · `gstack:unfreeze` · `gstack:land-and-deploy` · `gstack:setup-deploy` · `gstack:benchmark` · `gstack:benchmark-models` · `gstack:design-consultation` · `gstack:design-html` · `gstack:design-review` · `gstack:design-shotgun` · `gstack:devex-review` · `gstack:document-release` · `gstack:pair-agent` · `gstack:retro` · `gstack:plan-ceo-review` · `gstack:plan-design-review` · `gstack:plan-eng-review` · `gstack:plan-devex-review` · `gstack:plan-tune` · `gstack:context-save` · `gstack:context-restore` · `gstack:learn` · `gstack:gstack-upgrade` · `gstack:browse` · `gstack:health` · `gstack:make-pdf` · `gstack:cso` · `gstack:office-hours` · `gstack:codex` · `gstack:qa-only` · `gstack:open-gstack-browser` · `gstack:setup-browser-cookies`
+
+### Plugin Release
+`claude-code-plugin-release`
+
 ### Business Domain
 `carrier-relationship-management` · `customs-trade-compliance` · `energy-procurement` · `inventory-demand-planning` · `logistics-exception-management` · `production-scheduling` · `quality-nonconformance` · `returns-reverse-logistics` · `market-research` · `investor-materials` · `investor-outreach`
 
@@ -366,7 +381,24 @@ Use `/model-route` to get cost-optimal routing for any specific task.
 | `/model-route` | Get cost-optimal model routing |
 | `/sparc` | Run SPARC multi-agent pipeline (S→P→A→R→C) |
 | `/workflow-orchestrator` | Master orchestrator — auto-detects and routes any task |
+| `/anti-pattern-czar` | Fix error handling anti-patterns systematically |
 | `humanizer` skill | Remove AI writing patterns, restore human voice |
 | `swarm-orchestration` skill | Launch parallel agent swarm |
 | `hive-mind-advanced` skill | Collective intelligence for high-stakes decisions |
 | `agentic-jujutsu` skill | Advanced techniques: self-critique, adversarial testing |
+| `make-plan` skill | Create phased implementation plans with doc discovery |
+| `do` skill | Execute a phased plan using subagents |
+| `mem-search` skill | Search claude-mem cross-session memory |
+| `smart-explore` skill | AST-based token-efficient code exploration |
+| `knowledge-agent` skill | Build AI knowledge bases from session observations |
+| `timeline-report` skill | Generate project history narrative from claude-mem |
+| `job` skill | AI job search, CV tailoring, interview prep |
+| `dev-workflow` skill | Development workflow discipline principles |
+| `gstack:autoplan` skill | Auto-plan a feature from context (gstack sprint suite) |
+| `gstack:ship` skill | Full deploy pipeline — plan → build → QA → deploy |
+| `gstack:qa` skill | QA pass before shipping |
+| `gstack:review` skill | Code review (gstack-opinionated) |
+| `gstack:guard` skill | Security guard check on changes |
+| `gstack:investigate` skill | Debug/investigate an issue |
+| `gstack:retro` skill | Sprint retrospective |
+| `claude-code-plugin-release` skill | Semantic version bump + GitHub release for Claude plugins |
